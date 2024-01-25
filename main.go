@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"net/http"
+	"syscall"
 
 	"example.com/ginexample/config"
 	"example.com/ginexample/controller"
@@ -10,6 +12,10 @@ import (
 	"example.com/ginexample/repositories"
 	"example.com/ginexample/router"
 	"example.com/ginexample/service"
+
+	"os"
+	"os/signal"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/rs/zerolog/log"
@@ -48,6 +54,19 @@ func main() {
 	}
 
 	err := server.ListenAndServe()
-	// helper.ErrorPanic(err)
 	helpers.ErrorPanic(err)
+
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
+
+	log.Printf("Shutting down server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Printf("Server forced to shutdown:", err)
+	}
+
+	log.Printf("Server Stopped")
 }

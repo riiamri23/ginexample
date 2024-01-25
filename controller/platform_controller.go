@@ -31,8 +31,8 @@ func NewPlatformsController(service service.PlatformsService) *PlatformsControll
 // @Success			200 {object} response.Response{}
 // @Router			/platform [post]
 func (controller *PlatformsController) Create(ctx *gin.Context) {
-	log.Info().Msg("create Platforms")
 	createPlatformsRequest := requests.CreatePlatformsRequest{}
+	// spew.Dump(ctx)
 	err := ctx.ShouldBindJSON(&createPlatformsRequest)
 	helpers.ErrorPanic(err)
 
