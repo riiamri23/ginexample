@@ -52,7 +52,7 @@ func (controller *PlatformsController) Update(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&updatePlatformsRequest)
 	helpers.ErrorPanic(err)
 
-	platformId := ctx.Param("tagId")
+	platformId := ctx.Param("id")
 	id, err := strconv.Atoi(platformId)
 	helpers.ErrorPanic(err)
 	updatePlatformsRequest.Id = id
