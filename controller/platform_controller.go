@@ -27,7 +27,7 @@ func NewPlatformsController(service service.PlatformsService) *PlatformsControll
 // @Description		Save Platforms data in Db.
 // @Param			Platforms body request.CreatePlatformsRequest true "Create platform"
 // @Produce			application/json
-// @Platforms			Platforms
+// @Platforms		Platforms
 // @Success			200 {object} response.Response{}
 // @Router			/platform [post]
 func (controller *PlatformsController) Create(ctx *gin.Context) {
@@ -101,6 +101,14 @@ func (controller *PlatformsController) FindById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, webResponse)
 }
 
+// CreatePlatforms		godoc
+// @Summary			Get All Platforms
+// @Description		Save Platforms data in Db.
+// @Param			Platforms body empty
+// @Produce			application/json
+// @Platforms		Platforms
+// @Success			200 {object} response.Response{}
+// @Router			/platform
 func (controller *PlatformsController) FindAll(ctx *gin.Context) {
 	log.Info().Msg("findAll platforms")
 	tagResponse := controller.platformsService.FindAll()

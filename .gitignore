@@ -22,5 +22,3 @@ go.work
 
 vendor/
 ginexample
-go.mod
-go.sum
