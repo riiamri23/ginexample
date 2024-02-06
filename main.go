@@ -30,23 +30,13 @@ func main() {
 
 	db.Table("platforms").AutoMigrate(&model.Platforms{})
 
-	// Repository
+	// Platforms
 	platformsRepository := repositories.NewPlatformsRepositoryImpl(db)
-
-	// Service
 	platformsService := service.NewPlatFormsServiceImpl(platformsRepository, validate)
-
-	// Controller
 	platformsController := controller.NewPlatformsController(platformsService)
 
-	// routes := gin.Default()
-
-	// routes.GET("", func(ctx *gin.Context) {
-	// 	ctx.JSON(http.StatusOK, "Welcome Home")
-	// })
-
 	// Router
-	routes := router.NewRouter(platformsController)
+	routes := router.InitRouter(platformsController)
 
 	server := &http.Server{
 		Addr:    ":8888",
