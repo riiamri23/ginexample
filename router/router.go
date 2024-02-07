@@ -11,7 +11,8 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func InitRouter(platformsController *controller.PlatformsController) *gin.Engine {
+func InitRouter(authorizationController *controller.AuthorizationController, platformsController *controller.PlatformsController) *gin.Engine {
+
 	router := gin.Default()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
@@ -19,11 +20,11 @@ func InitRouter(platformsController *controller.PlatformsController) *gin.Engine
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.GET("", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, "welcome home")
+		ctx.JSON(http.StatusOK, "welcome to the gin example")
 	})
 	baseRouter := router.Group("/api")
 	{
-		baseRouter.POST("/login", controller.LoginHandler)
+		baseRouter.POST("/login", authorizationController.LoginHandler)
 		platformsRouter := baseRouter.Group("/platform").Use(middleware.Auth())
 		{
 			platformsRouter.GET("", platformsController.FindAll)

@@ -1,27 +1,37 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"example.com/ginexample/auth"
+	"example.com/ginexample/data/responses"
+	"example.com/ginexample/service"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
 )
 
-type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+type AuthorizationController struct {
+	authorizationService service.AuthorizationService
 }
 
-func LoginHandler(ctx *gin.Context) {
-	var u User
+func NewAuthorizationController(service service.AuthorizationService) *AuthorizationController {
+	return &AuthorizationController{
+		authorizationService: service,
+	}
+}
+
+func (controller *AuthorizationController) LoginHandler(ctx *gin.Context) {
+	var u responses.AuthorizationResponse
 
 	if err := ctx.ShouldBindJSON(&u); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		ctx.Abort()
 		return
 	}
-	fmt.Printf("The user request value %v", u)
+
+	authResponse := controller.authorizationService.FindUser("riiamri23", "password123")
+
+	spew.Dump(authResponse)
 
 	var isAuthorization = u.Username == "Check" && u.Password == "123456"
 	if isAuthorization {
@@ -39,5 +49,4 @@ func LoginHandler(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, "Username or password wrong")
 	}
 
-	return
 }

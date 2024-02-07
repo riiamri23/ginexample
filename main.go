@@ -30,13 +30,18 @@ func main() {
 
 	db.Table("platforms").AutoMigrate(&model.Platforms{})
 
+	// Authorization
+	authorizationRepository := repositories.NewAuthorizationRepositoryImpl(db)
+	authorizationService := service.NewAuthorizationServiceImpl(authorizationRepository, validate)
+	authorizationController := controller.NewAuthorizationController(authorizationService)
+
 	// Platforms
 	platformsRepository := repositories.NewPlatformsRepositoryImpl(db)
 	platformsService := service.NewPlatFormsServiceImpl(platformsRepository, validate)
 	platformsController := controller.NewPlatformsController(platformsService)
 
 	// Router
-	routes := router.InitRouter(platformsController)
+	routes := router.InitRouter(authorizationController, platformsController)
 
 	server := &http.Server{
 		Addr:    ":8888",
