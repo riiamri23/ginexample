@@ -5,8 +5,11 @@ import (
 
 	"example.com/ginexample/auth"
 	"example.com/ginexample/data/responses"
+	"example.com/ginexample/helpers"
+
+	// "example.com/ginexample/model"
 	"example.com/ginexample/service"
-	"github.com/davecgh/go-spew/spew"
+	// "github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,17 +32,24 @@ func (controller *AuthorizationController) LoginHandler(ctx *gin.Context) {
 		return
 	}
 
-	authResponse := controller.authorizationService.FindUser("riiamri23", "password123")
+	authResponse := controller.authorizationService.FindUser(u.Username, u.Password)
 
-	spew.Dump(authResponse)
+	// spew.Dump(authResponse.Username)
 
-	var isAuthorization = u.Username == "Check" && u.Password == "123456"
+	var isAuthorization = authResponse.Username != ""
 	if isAuthorization {
 		tokenString, err := auth.CreateToken(u.Username)
+		authResponse.Jwtkey = tokenString
 
 		if err == nil {
+			helpers.SetCookieHandler(ctx, "Username", u.Username)
+			helpers.SetCookieHandler(ctx, "AuthorizationKey", tokenString)
+
+			// spew.Dump(ctx.Cookie("Username"))
+			// spew.Dump(ctx.Cookie("AuthorizationKey"))
+
 			ctx.Header("Content-Type", "application/json")
-			ctx.JSON(http.StatusOK, tokenString)
+			ctx.JSON(http.StatusOK, authResponse)
 		} else {
 			ctx.Header("Content-Type", "application/json")
 			ctx.JSON(http.StatusInternalServerError, "No username found")

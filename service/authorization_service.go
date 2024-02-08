@@ -4,6 +4,7 @@ import (
 	"example.com/ginexample/data/responses"
 	"example.com/ginexample/helpers"
 	"example.com/ginexample/repositories"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -27,6 +28,8 @@ func (t *AuthorizationServiceImp) FindUser(username string, password string) res
 	result, err := t.AuthorizationRepository.FindUser(username, password)
 
 	helpers.ErrorPanic(err)
+
+	spew.Dump(err)
 
 	userResponse := responses.AuthorizationResponse{
 		Username: result.Username,

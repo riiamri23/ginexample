@@ -25,8 +25,6 @@ func (t *AuthorizationRepositoryImp) FindUser(username string, password string) 
 	var user model.Users
 
 	result := t.Db.Where("username = ?", username).Where("password = ?", password).Find(&user)
-	// result := t.Db.Where("username = ?", username).Where("password = ?", password).First(&user).Error
-
 	spew.Dump(user)
 
 	if result != nil {
