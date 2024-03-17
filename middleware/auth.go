@@ -9,11 +9,13 @@ func Auth() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		tokenString := context.GetHeader("Authorization")
 
+		// spew.Dump(tokenString)
 		if tokenString == "" {
 			context.JSON(401, gin.H{"error": "request does not contain an access token"})
 			context.Abort()
 			return
 		}
+		tokenString = tokenString[len("Bearer "):]
 
 		err := auth.VerifyToken(tokenString)
 

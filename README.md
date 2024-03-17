@@ -17,3 +17,8 @@ go 1.21
   1. go mod vendor
   2. go mod tidy
   3. go run ./main.go
+
+  ## Flow the coding
+
+  Login -> get Token (auth) -> run the endpoint
+  Service -> Controller -> Router(endpoint)
