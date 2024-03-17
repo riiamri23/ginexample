@@ -36,8 +36,7 @@ func (controller *AuthorizationController) LoginHandler(ctx *gin.Context) {
 
 	// spew.Dump(authResponse.Username)
 
-	var isAuthorization = authResponse.Username != ""
-	if isAuthorization {
+	if authResponse.Username != "" {
 		tokenString, err := auth.CreateToken(u.Username)
 		authResponse.Jwtkey = tokenString
 

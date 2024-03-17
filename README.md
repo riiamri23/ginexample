@@ -1,5 +1,9 @@
-# ginexample
+# GinExample - Just for Learn
 
+## Information about gist
+https://gist.github.com/riiamri23/51f3b63d6f18ec48dd31f1b3871555cd
+
+## There is Version and information about library
 - version go
 go 1.21
 
