@@ -26,7 +26,7 @@ func DatabaseConnection() *gorm.DB {
 	)
 
 	// db, err = sql.Open("mysql", "root:amri@tcp(127.0.0.1:3306)/db_hris")
-	sqlInfo := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, dbName)
+	sqlInfo := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", user, password, host, port, dbName)
 
 	db, err := gorm.Open(mysql.Open(sqlInfo), &gorm.Config{})
 	helpers.ErrorPanic(err)

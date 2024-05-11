@@ -43,15 +43,33 @@ func (e *EmployeesServiceImp) FindAll() []data_employee.EmployeeResponse {
 	var employees []data_employee.EmployeeResponse
 
 	for _, value := range data {
+		// date formatting
+
 		tempData := data_employee.EmployeeResponse{
-			Id:            value.Id,
-			FirstName:     &value.Firstname,
-			LastName:      &value.Lastname,
-			ContactNo:     &value.Contact_no,
-			OfficialEmail: &value.Official_email,
-			PersonalEmail: &value.Personal_email,
-			IdentityNo:    &value.Identity_no,
-			DateOfBirth:   value.Date_of_birth,
+			Id:                           value.Id,
+			FirstName:                    &value.Firstname,
+			LastName:                     &value.Lastname,
+			ContactNo:                    &value.Contact_no,
+			OfficialEmail:                &value.Official_email,
+			PersonalEmail:                &value.Personal_email,
+			IdentityNo:                   &value.Identity_no,
+			DateOfBirth:                  helpers.FormatDate(value.Date_of_birth, ""),
+			Gender:                       &value.Gender,
+			EmergencyContactRelationship: &value.Gender,
+			EmergencyContact:             &value.Gender,
+			EmerrgencyContactAddress:     &value.Gender,
+			City:                         &value.Gender,
+			Designation:                  &value.Gender,
+			Type:                         &value.Gender,
+			Status:                       value.Status,
+			EmploymentStatus:             &value.Gender,
+			Picture:                      &value.Gender,
+			JoiningDate:                  helpers.FormatDate(value.Joining_date, ""),
+			ExitDate:                     helpers.FormatDate(value.Exit_date, ""),
+			GrossSalary:                  value.Gross_salary,
+			Bonus:                        value.Bonus,
+			BranchId:                     &value.Gender,
+			DepartmentId:                 &value.Gender,
 		}
 
 		employees = append(employees, tempData)

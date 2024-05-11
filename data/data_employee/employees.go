@@ -1,6 +1,6 @@
 package data_employee
 
-import "time"
+import "gorm.io/datatypes"
 
 type CreateEmployeeRequest struct {
 	Id string `validate:"required" json:"id"`
@@ -10,14 +10,30 @@ type UpdateEmployeeRequest struct {
 }
 
 type EmployeeResponse struct {
-	Id            int       `json:"id"`
-	FirstName     *string   `json:"firstname"`
-	LastName      *string   `json:"lastname"`
-	ContactNo     *string   `json:"contact_no"`
-	OfficialEmail *string   `json:"official_email"`
-	PersonalEmail *string   `json:"Personal_email"`
-	IdentityNo    *string   `json:"identity_no"`
-	DateOfBirth   time.Time `json:"date_of_birth"`
+	Id                           int            `json:"id"`
+	FirstName                    *string        `json:"firstname"`
+	LastName                     *string        `json:"lastname"`
+	ContactNo                    *string        `json:"contact_no"`
+	OfficialEmail                *string        `json:"official_email"`
+	PersonalEmail                *string        `json:"Personal_email"`
+	IdentityNo                   *string        `json:"identity_no"`
+	DateOfBirth                  datatypes.Date `json:"date_of_birth"`
+	Gender                       *string        `json:"gender"`
+	EmergencyContactRelationship *string        `json:"emergency_contact_relationship"`
+	EmergencyContact             *string        `json:"emergency_contact"`
+	EmerrgencyContactAddress     *string        `json:"emergency_contact_address"`
+	City                         *string        `json:"city"`
+	Designation                  *string        `json:"designation"`
+	Type                         *string        `json:"type"`
+	Status                       int            `json:"status"`
+	EmploymentStatus             *string        `json:"employment_status"`
+	Picture                      *string        `json:"picture"`
+	JoiningDate                  datatypes.Date `json:"joining_date"`
+	ExitDate                     datatypes.Date `json:"exit_date"`
+	GrossSalary                  int            `json:"gross_salary"`
+	Bonus                        int            `json:"bonus"`
+	BranchId                     *string        `json:"branch_id"`
+	DepartmentId                 *string        `json:"department_id"`
 }
 
 /*
@@ -62,32 +78,32 @@ CREATE TABLE `employees` (
 */
 
 type Employees struct {
-	Id                             int       `gorm:"type:int;primary_key"`
-	Firstname                      string    `gorm:"type:varchar(255)"`
-	Lastname                       string    `gorm:"type:varchar(255)"`
-	Contact_no                     string    `gorm:"type:varchar(255)"`
-	Official_email                 string    `gorm:"type:varchar(255)"`
-	Personal_email                 string    `gorm:"type:varchar(255)"`
-	Identity_no                    string    `gorm:"type:varchar(255)"`
-	Date_of_birth                  time.Time `gorm:"type:date"`
-	Gender                         string    `gorm:"type:varchar(255)"`
-	Emergency_contact_relationship string    `gorm:"type:varchar(255)"`
-	Emergency_contact              string    `gorm:"type:varchar(255)"`
-	Emergency_contact_address      string    `gorm:"type:text"`
-	City                           string    `gorm:"type:varchar(255)"`
-	Designation                    string    `gorm:"type:varchar(255)"`
-	Type                           string    `gorm:"type:varchar(255)"`
-	Status                         int       `gorm:"type:int"`
-	Employment_status              string    `gorm:"type:varchar(255)"`
-	Picture                        string    `gorm:"type:varchar(255)"`
-	Joining_date                   time.Time `gorm:"type:date"`
-	Exit_date                      time.Time `gorm:"type:date"`
-	Gross_salary                   int       `gorm:"type:int"`
-	Bonus                          int       `gorm:"type:int"`
-	Branch_id                      string    `gorm:"type:varchar(255)"`
-	Department_id                  string    `gorm:"type:varchar(255)"`
-	Remember_token                 string    `gorm:"type:varchar(100)"`
-	Deleted_at                     time.Time `gorm:"type:timestamp"`
-	Created_at                     time.Time `gorm:"type:timestamp"`
-	Updated_at                     time.Time `gorm:"type:timestamp"`
+	Id                             int            `gorm:"type:int;primary_key"`
+	Firstname                      string         `gorm:"type:varchar(255)"`
+	Lastname                       string         `gorm:"type:varchar(255)"`
+	Contact_no                     string         `gorm:"type:varchar(255)"`
+	Official_email                 string         `gorm:"type:varchar(255)"`
+	Personal_email                 string         `gorm:"type:varchar(255)"`
+	Identity_no                    string         `gorm:"type:varchar(255)"`
+	Date_of_birth                  datatypes.Date `gorm:"type:date"`
+	Gender                         string         `gorm:"type:varchar(255)"`
+	Emergency_contact_relationship string         `gorm:"type:varchar(255)"`
+	Emergency_contact              string         `gorm:"type:varchar(255)"`
+	Emergency_contact_address      string         `gorm:"type:text"`
+	City                           string         `gorm:"type:varchar(255)"`
+	Designation                    string         `gorm:"type:varchar(255)"`
+	Type                           string         `gorm:"type:varchar(255)"`
+	Status                         int            `gorm:"type:int"`
+	Employment_status              string         `gorm:"type:varchar(255)"`
+	Picture                        string         `gorm:"type:varchar(255)"`
+	Joining_date                   datatypes.Date `gorm:"type:date"`
+	Exit_date                      datatypes.Date `gorm:"type:date"`
+	Gross_salary                   int            `gorm:"type:int"`
+	Bonus                          int            `gorm:"type:int"`
+	Branch_id                      string         `gorm:"type:varchar(255)"`
+	Department_id                  string         `gorm:"type:varchar(255)"`
+	Remember_token                 string         `gorm:"type:varchar(100)"`
+	Deleted_at                     datatypes.Date `gorm:"type:timestamp"`
+	Created_at                     datatypes.Date `gorm:"type:timestamp"`
+	Updated_at                     datatypes.Date `gorm:"type:timestamp"`
 }
