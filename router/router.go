@@ -63,6 +63,7 @@ func InitRouter(db *gorm.DB, validate *validator.Validate) *gin.Engine {
 		employeesRouter := baseRouter.Group("/employee").Use(middleware.Auth())
 		{
 			employeesRouter.GET("", employeesController.FindAllEmployees)
+			employeesRouter.GET("/:id", employeesController.FindByIdEmployees)
 		}
 	}
 

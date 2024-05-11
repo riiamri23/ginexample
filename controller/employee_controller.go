@@ -2,8 +2,10 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"example.com/ginexample/data/responses"
+	"example.com/ginexample/helpers"
 	"example.com/ginexample/service"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
@@ -40,4 +42,33 @@ func (controller *EmployeesController) FindAllEmployees(ctx *gin.Context) {
 	}
 	ctx.Header("Content-type", "application/json")
 	ctx.JSON(http.StatusOK, webResponse)
+}
+
+func (controller *EmployeesController) FindByIdEmployees(ctx *gin.Context) {
+
+	log.Info().Msg("Find By Id Employee")
+	employeeId := ctx.Param("id")
+	id, err := strconv.Atoi(employeeId)
+	helpers.ErrorPanic(err)
+
+	tagResponse := controller.employeesService.FindById(id)
+	if tagResponse != nil {
+
+		webResponse := responses.Response{
+			Code:   http.StatusOK,
+			Status: "Ok",
+			Data:   tagResponse,
+		}
+		ctx.Header("Content-Type", "application/json")
+		ctx.JSON(http.StatusOK, webResponse)
+	} else {
+
+		webResponse := responses.Response{
+			Code:   http.StatusNoContent,
+			Status: "Employee is not found",
+			Data:   tagResponse,
+		}
+		ctx.Header("Content-Type", "application/json")
+		ctx.JSON(http.StatusOK, webResponse)
+	}
 }
