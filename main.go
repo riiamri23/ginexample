@@ -6,12 +6,9 @@ import (
 	"syscall"
 
 	"example.com/ginexample/config"
-	"example.com/ginexample/controller"
 	"example.com/ginexample/helpers"
 	"example.com/ginexample/model"
-	"example.com/ginexample/repositories"
 	"example.com/ginexample/router"
-	"example.com/ginexample/service"
 
 	"os"
 	"os/signal"
@@ -30,18 +27,8 @@ func main() {
 
 	db.Table("platforms").AutoMigrate(&model.Platforms{})
 
-	// Authorization
-	authorizationRepository := repositories.NewAuthorizationRepositoryImpl(db)
-	authorizationService := service.NewAuthorizationServiceImpl(authorizationRepository, validate)
-	authorizationController := controller.NewAuthorizationController(authorizationService)
-
-	// Platforms
-	platformsRepository := repositories.NewPlatformsRepositoryImpl(db)
-	platformsService := service.NewPlatFormsServiceImpl(platformsRepository, validate)
-	platformsController := controller.NewPlatformsController(platformsService)
-
 	// Router
-	routes := router.InitRouter(authorizationController, platformsController)
+	routes := router.InitRouter(db, validate)
 
 	server := &http.Server{
 		Addr:    ":8888",
