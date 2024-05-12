@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"example.com/ginexample/data/data_employee"
 	"example.com/ginexample/data/responses"
 	"example.com/ginexample/helpers"
 	"example.com/ginexample/service"
@@ -19,8 +20,22 @@ func NewEmployeesController(service service.EmployeesService) *EmployeesControll
 	return &EmployeesController{employeesService: service}
 }
 
-func CreateEmployees(ctx *gin.Context) {
+func (controller *EmployeesController) CreateEmployees(ctx *gin.Context) {
+	createEmployeeRequest := data_employee.Employees{}
 
+	err := ctx.ShouldBindJSON(&createEmployeeRequest)
+	helpers.ErrorPanic(err)
+
+	controller.employeesService.Create(createEmployeeRequest)
+
+	webResponse := responses.Response{
+		Code:   http.StatusOK,
+		Status: "Successfully save the employee data",
+		Data:   nil,
+	}
+
+	ctx.Header("Content-Type", "application/json")
+	ctx.JSON(http.StatusOK, webResponse)
 }
 
 func UpdateEmployees(ctx *gin.Context) {

@@ -3,7 +3,6 @@ package service
 import (
 	"example.com/ginexample/data/data_employee"
 	"example.com/ginexample/helpers"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 )
@@ -11,7 +10,7 @@ import (
 type EmployeesService interface {
 	FindAll() []data_employee.EmployeeResponse
 	FindById(id int) *data_employee.EmployeeResponse
-	Create(data data_employee.EmployeeResponse)
+	Create(data data_employee.Employees)
 	Update(data data_employee.EmployeeResponse)
 	Delete(id int)
 }
@@ -29,8 +28,15 @@ func NewEmployeesServiceImpl(validate *validator.Validate, Db *gorm.DB) Employee
 }
 
 // Create implements EmployeesService.
-func (e *EmployeesServiceImp) Create(data data_employee.EmployeeResponse) {
-	panic("unimplemented")
+func (e *EmployeesServiceImp) Create(data data_employee.Employees) {
+	// panic("unimplemented")
+
+	err := e.Validate.Struct(data)
+	helpers.ErrorPanic(err)
+
+	result := e.Db.Create(&data)
+	helpers.ErrorPanic(result.Error)
+
 }
 
 // Delete implements EmployeesService.
@@ -96,12 +102,11 @@ func (e *EmployeesServiceImp) FindById(id int) *data_employee.EmployeeResponse {
 		// Handle error if needed
 		return nil
 	}
-	spew.Dump(data.Id)
-	if data.Id == 0 {
+	if result.RowsAffected == 0 {
 		return nil
 	}
 
-	// helpers.ErrorPanic(result.Error)
+	helpers.ErrorPanic(result.Error)
 	employee := &data_employee.EmployeeResponse{
 		Id:                           data.Id,
 		FirstName:                    &data.Firstname,
@@ -130,6 +135,14 @@ func (e *EmployeesServiceImp) FindById(id int) *data_employee.EmployeeResponse {
 	}
 
 	return employee
+
+	// employee := data_employee.EmployeeResponse{}
+	// helpers.MapFields(data, &employee)
+	// helpers.MapFields(helpers.FormatDate(data.Date_of_birth, ""), &employee.DateOfBirth)
+	// helpers.MapFields(helpers.FormatDate(data.Joining_date, ""), &employee.JoiningDate)
+	// helpers.MapFields(helpers.FormatDate(data.Exit_date, ""), &employee.ExitDate)
+
+	// return &employee
 }
 
 // Update implements EmployeesService.
